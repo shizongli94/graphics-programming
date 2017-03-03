@@ -5,6 +5,7 @@ Command::Command() {
     opcode = 0;
     x = 0;
     y = 0;
+    alpha = 1;
 }
 
 int Command::get_opcode() {
@@ -23,4 +24,11 @@ double Command::get_x() {
 
 double Command::get_y() {
     return y;
+}
+
+void Command::set_alpha(double a) {
+    alpha = a;
+}
+double Command::get_alpha() {
+    return alpha;
 }

@@ -1,4 +1,4 @@
-main: Screen2DSquare.o Drawer2DRectangle.o DisplayFileInterpreter2DRectangle.o main.o 
+main: Screen2DSquare.o Drawer2DRectangle.o DisplayFileInterpreter2DRectangle.o Transformer2D.o main.o 
 	g++ $(shell Magick++-config --ldflags --cxxflags) $(wildcard *.o)  -o main
 
 main.o: main.cc
@@ -19,6 +19,11 @@ Drawer2DRectangle.o: include/Drawer2DRectangle.h src/Drawer2DRectangle.cc FrameB
 Command.o: include/Command.h src/Command.cc
 	g++ -c include/Command.h src/Command.cc
 
-DisplayFileInterpreter2DRectangle.o: include/DisplayFileInterpreter2DRectangle.h src/DisplayFileInterpreter2DRectangle.cc Command.o Drawer2DRectangle.o
+DisplayFileInterpreter2DRectangle.o: include/DisplayFileInterpreter2DRectangle.h src/DisplayFileInterpreter2DRectangle.cc Command.o Drawer2DRectangle.o PolySide.o Transformer2D.o
 	g++ -c include/DisplayFileInterpreter2DRectangle.h src/DisplayFileInterpreter2DRectangle.cc
 
+PolySide.o: include/PolySide.h src/PolySide.cc
+	g++ -c include/PolySide.h src/PolySide.cc
+
+Transformer2D.o: include/Transformer2D.h src/Transformer2D.cc
+	g++ -c include/Transformer2D.h src/Transformer2D.cc

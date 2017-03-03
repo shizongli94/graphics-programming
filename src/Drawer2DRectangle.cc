@@ -11,7 +11,7 @@ Drawer2DRectangle::~Drawer2DRectangle() {
     delete frame;
 }
 
-void Drawer2DRectangle::draw_line_segment_dda(double x1, double y1, double x2, double y2, bool with_aa) {
+void Drawer2DRectangle::draw_line_segment_dda(double x1, double y1, double x2, double y2, double alpha, bool with_aa) {
     double dx, dy;
     double m, b;
     int start_index, end_index, select;
@@ -37,20 +37,20 @@ void Drawer2DRectangle::draw_line_segment_dda(double x1, double y1, double x2, d
                 if (m > 0) {
                     intensity = fabs(H - 0.5);
                     if (fabs(H) > 0.5){
-                        frame->set_alpha_at(i, select + 1, 1-intensity);
+                        frame->set_alpha_at(i, select + 1, (1-alpha)*(1-intensity));
                     }else{
-                        frame->set_alpha_at(i, select - 1, 1-intensity);
+                        frame->set_alpha_at(i, select - 1, (1-alpha)*(1-intensity));
                     }
                 }else {
                     intensity = fabs(H + 0.5);
                     if (fabs(H) < 0.5){
-                        frame->set_alpha_at(i, select + 1, 1-intensity);
+                        frame->set_alpha_at(i, select + 1, (1-alpha)*(1-intensity));
                     }else{
-                        frame->set_alpha_at(i, select - 1, 1-intensity);
+                        frame->set_alpha_at(i, select - 1, (1-alpha)*(1-intensity));
                     }
                 }
             }else
-                intensity = 0;
+                intensity = alpha;
 
 
 
@@ -111,7 +111,7 @@ void Drawer2DRectangle::draw_line_segment_dda(double x1, double y1, double x2, d
     }
 }
 
-void Drawer2DRectangle::draw_line_segment_bresenham(int x1, int y1, int x2, int y2, bool with_aa) {
+void Drawer2DRectangle::draw_line_segment_bresenham(int x1, int y1, int x2, int y2, double alpha, bool with_aa) {
     int dy, dx;
     int start_index, select, end_index;
     int P;
@@ -136,7 +136,7 @@ void Drawer2DRectangle::draw_line_segment_bresenham(int x1, int y1, int x2, int 
         if (dy > 0){
             P = 2*dy - dx;
             for (int i=start_index; i <=end_index; i++) {
-                frame->set_alpha_at(i, select, 0);
+                frame->set_alpha_at(i, select, alpha);
                 if (P > 0){
                     select += 1;
                     P = P + 2*dy - 2 * dx;
@@ -147,7 +147,7 @@ void Drawer2DRectangle::draw_line_segment_bresenham(int x1, int y1, int x2, int 
         }else{
             P = 2 * dy + dx;
             for (int i=start_index; i<=end_index; i++){
-                frame->set_alpha_at(i, select, 0);
+                frame->set_alpha_at(i, select, alpha);
                 if (P < 0){
                     select -= 1;
                     P = P + 2*dy + 2*dx;
@@ -174,7 +174,7 @@ void Drawer2DRectangle::draw_line_segment_bresenham(int x1, int y1, int x2, int 
         if (dx > 0){
             P = 2*dx - dy;
             for (int i=start_index; i<=end_index; i++){
-                frame->set_alpha_at(select, i, 0);
+                frame->set_alpha_at(select, i, alpha);
                 if (P > 0){
                     select += 1;
                     P = P + 2*dx - 2*dy;
@@ -185,7 +185,7 @@ void Drawer2DRectangle::draw_line_segment_bresenham(int x1, int y1, int x2, int 
         }else{
             P = 2*dx + dy;
             for (int i=start_index; i<=end_index; i++){
-                frame->set_alpha_at(select, i, 0);
+                frame->set_alpha_at(select, i, alpha);
                 if (P < 0){
                     select -= 1;
                     P = P + 2*dx + 2*dy;
